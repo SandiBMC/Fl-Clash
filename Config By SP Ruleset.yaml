@@ -1,0 +1,195 @@
+ipv6: false
+mode: rule
+log-level: info
+allow-lan: true
+geodata-mode: false
+external-controller: 127.0.0.1:9090
+external-ui: 'https://d.metacubex.one'
+unified-delay: true
+find-process: always
+find-process-mode: always
+global-client-fingerprint: firefox
+auto-run: true
+
+profile:
+  store-selected: true
+
+dns:
+  enable: true
+  ipv6: false
+  nameserver:
+    - 1.0.0.1
+    - 112.215.198.254
+  fallback:
+    - 1.0.0.1
+    - 112.215.198.254
+  default-nameserver:
+    - 1.0.0.1
+    - 112.215.198.254
+
+proxy-providers:
+  Akun-VIP:
+    type: http
+    behavior: domain
+    url: 'https://github.com/SandiBMC/Fl-Clash/releases/download/26-27-290624/Akun-VIP.yaml'
+    interval: 86400
+    path: "./Akun-VIP.yaml"
+    health-check:
+      enable: true
+      url: 'http://cp.cloudflare.com'
+      interval: 60
+  Bitz-Black:
+    type: http
+    behavior: domain
+    url: 'https://github.com/SandiBMC/Fl-Clash/releases/download/26-27-290624/Bitz-Black.yaml'
+    interval: 86400
+    path: "./Bitz-Black.yaml"
+    health-check:
+      enable: true
+      url: 'http://cp.cloudflare.com'
+      interval: 60
+  Mas-Fen:
+    type: http
+    behavior: domain
+    url: 'https://github.com/SandiBMC/Fl-Clash/releases/download/26-27-290624/Mas-Fen.yaml'
+    interval: 86400
+    path: "./Mas-Fen.yaml"
+    health-check:
+      enable: true
+      url: 'http://cp.cloudflare.com'
+      interval: 60
+
+proxy-groups:
+  - name: ADS
+    type: select
+    health-check:
+      enable: true
+      url: 'http://cp.cloudflare.com'
+      interval: 60
+    proxies:
+      - DIRECT
+      - REJECT
+      - AKUN VIP
+    default:
+      use: REJECT
+  - name: AKUN VIP
+    type: select
+    health-check:
+      enable: true
+      url: 'http://cp.cloudflare.com'
+      interval: 60
+    proxies:
+      - DIRECT
+      - REJECT
+      - Bitz Black
+      - Mas Fen
+    use:
+      - Akun-VIP
+  - name: Bitz Black
+    type: select
+    health-check:
+      enable: true
+      url: 'http://cp.cloudflare.com'
+      interval: 60
+    proxies:
+      - DIRECT
+      - REJECT
+    use: 
+      - Bitz-Black
+  - name: Mas Fen
+    type: select
+    health-check:
+      enable: true
+      url: 'http://cp.cloudflare.com'
+      interval: 60
+    proxies:
+      - DIRECT
+      - REJECT
+    use: 
+      - Mas-Fen
+  - name: WOWS
+    type: select
+    health-check:
+      enable: true
+      url: 'http://cp.cloudflare.com'
+      interval: 60
+    proxies:
+      - DIRECT
+      - REJECT
+    use:
+      - Akun-VIP
+  - name: YouTube
+    type: select
+    health-check:
+      enable: true
+      url: 'http://cp.cloudflare.com'
+      interval: 60
+    proxies:
+      - DIRECT
+      - REJECT
+      - Bitz Black
+      - Mas Fen
+  - name: FB-IG-VD
+    type: select
+    health-check:
+      enable: true
+      url: 'http://cp.cloudflare.com'
+      interval: 60
+    proxies:
+      - DIRECT
+      - REJECT
+
+rules:
+  - RULE-SET,YouTube,YouTube
+  - RULE-SET,FB-IG-VD,FB-IG-VD
+  - RULE-SET,WOWS,WOWS
+  - RULE-SET,ABP-Domain,ADS
+  - RULE-SET,ABP-Suffix,ADS
+  - RULE-SET,ABP,ADS
+  - RULE-SET,OISD,ADS
+  - MATCH,AKUN VIP
+
+rule-providers:
+  YouTube:
+    type: http
+    behavior: domain
+    url: 'https://github.com/SandiBMC/Fl-Clash/releases/download/290624/YouTube.yaml'
+    interval: 86400
+    path: "./YouTube.yaml"
+  FB-IG-VD:
+    type: http
+    behavior: domain
+    url: 'https://github.com/SandiBMC/Fl-Clash/releases/download/290624-13816/FB-IG-VD.yaml'
+    interval: 86400
+    path: "./FB-IG-VD.yaml"
+  WOWS:
+    type: http
+    behavior: domain
+    url: 'https://github.com/SandiBMC/Fl-Clash/releases/download/190624/WOWS.yaml'
+    interval: 86400
+    
+    path: "./WOWS.yaml"
+  ABP-Domain:
+    type: http
+    behavior: domain
+    url: 'https://github.com/SandiBMC/Fl-Clash/releases/download/20-26-290624/ABP-Domain.yaml'
+    interval: 86400
+    path: "./ABP-Domain.yaml"
+  ABP-Suffix:
+    type: http
+    behavior: domain
+    url: 'https://github.com/SandiBMC/Fl-Clash/releases/download/20-26-290624/ABP-Suffix.yaml'
+    interval: 86400
+    path: "./ABP-Suffix.yaml"
+  ABP:
+    type: http
+    behavior: domain
+    url: 'https://github.com/SandiBMC/Fl-Clash/releases/download/20-26-290624/ABP.yaml'
+    interval: 86400
+    path: "./ABP.yaml"
+  OISD:
+    type: http
+    behavior: domain
+    url: 'https://github.com/SandiBMC/Fl-Clash/releases/download/270624-015/OISD.yaml'
+    interval: 86400
+    path: "./OISD.yaml"
